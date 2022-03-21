@@ -43,16 +43,6 @@ public class LeafNode extends DNATreeNode {
     }
 
 
-//    /**
-//     * The getSequence method that returns the dnaSequence
-//     * 
-//     * @return dnaSequence
-//     */
-//    public String getSequence() {
-//        return dnaSequence.toString();
-//    }
-
-
     /**
      * Checks if the sequence contains leafNode's sequence
      * 
@@ -63,22 +53,6 @@ public class LeafNode extends DNATreeNode {
     public boolean containsSequence(LeafNode nodeValue) {
         return String.valueOf(this.dnaSequence).equals(String.valueOf(
             nodeValue.dnaSequence));
-    }
-
-
-    /**
-     * Finds and returns the character from dnaSequence at given depth of the
-     * DNAtree.
-     * 
-     * @param depth
-     *            the level where the character in dnaSequenceis located
-     * @return the character in dnaSequence
-     */
-    public char getCharAt(int depth) {
-        if (depth < dnaSequence.length) {
-            return dnaSequence[depth];
-        }
-        return 0;
     }
 
 
@@ -101,22 +75,23 @@ public class LeafNode extends DNATreeNode {
         return String.valueOf(dnaSequence);
     }
 
-// /**
-// * Finds the right index for the a leaf node being traversed.
-// *
-// *
-// * @param depth
-// * the level where the character in dnaSequenceis located
-// * @return the integer value of the current level of the character
-// */
-// public int getIndexOfByDepth(int depth) {
-// String dNASequence = "ACGT$";
-// if (depth < dnaSequence.length) {
-// return dNASequence.indexOf(dnaSequence[depth]);
-// }
-// return -1;
-//
-// }
+
+    /**
+     * Finds the right index for the a leaf node being traversed.
+     *
+     *
+     * @param depth
+     *            the depth where the character in dnaSequenceis located
+     * @return the integer value of the current level of the character
+     */
+    public int getIndexOfByDepth(int depth) {
+        String dNASequence = "ACGT$";
+        if (depth < dnaSequence.length) {
+            return dNASequence.indexOf(dnaSequence[depth]);
+        }
+        return 4;
+
+    }
 
 
     /**
@@ -159,33 +134,33 @@ public class LeafNode extends DNATreeNode {
      */
     @Override
     public void printNodeStats(int depth) {
-        double n = (dnaSequence.length / 100.);
-        int a = 0;
-        int c = 0;
-        int g = 0;
-        int t = 0;
-        for (char characterVal : dnaSequence) {
-            switch (characterVal) {
-                case 'A':
-                    a++;
-                    break;
-                case 'C':
-                    c++;
-                    break;
-                case 'G':
-                    g++;
-                    break;
-                case 'T':
-                    t++;
-                    break;
-                default:
-                    break;
+        double total = dnaSequence.length;
+        int aCount = 0;
+        int cCount = 0;
+        int gCount = 0;
+        int tCount = 0;
+        for (char currLetter : dnaSequence) {
+            if (currLetter == 'A') {
+                aCount++;
+            }
+            if (currLetter == 'C') {
+                cCount++;
+            }
+            if (currLetter == 'G') {
+                gCount++;
+            }
+            if (currLetter == 'T') {
+                tCount++;
             }
         }
 
-        String stats = String.format("A:%.2f C:%.2f G:%.2f T:%.2f", a / n, c
-            / n, g / n, t / n);
-        System.out.println(String.valueOf(dnaSequence) + " " + stats);
+        String statsA = String.format("%.2f", aCount / total * 100);
+        String statsC = String.format("%.2f", cCount / total * 100);
+        String statsG = String.format("%.2f", gCount / total * 100);
+        String statsT = String.format("%.2f", tCount / total * 100);
+
+        System.out.println(String.valueOf(dnaSequence) + " A:" + statsA + " C:"
+            + statsC + " G:" + statsG + " T:" + statsT);
 
     }
 
@@ -207,7 +182,7 @@ public class LeafNode extends DNATreeNode {
      * storing it in results, based on the current depth of the tree.
      * 
      * @param depth
-     *            the current level in the tree
+     *            the current depth in the tree
      * @param searchSequence
      *            the search term
      * @param match

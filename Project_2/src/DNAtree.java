@@ -1,10 +1,7 @@
 
-// import java.io.File;
-// import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
-// import java.util.Scanner;
 
 // On my honor:
 // - I have not used source code obtained from another student,
@@ -69,6 +66,7 @@ public class DNAtree {
                 }
             }
         }
+        scannedFile.close();
 
     }
 
@@ -139,7 +137,6 @@ public class DNAtree {
      *            the new DNA sequence to insert
      */
     public void insert(String sequence) {
-
         LeafNode newnode = new LeafNode(sequence);
         if (alphabetIsValid(sequence.toCharArray())) {
 
@@ -156,11 +153,6 @@ public class DNAtree {
                         + " already exists");
                     return;
                 }
-//                if (leafnode.getSequence().equals(sequence)) {
-//                    System.out.println("sequence " + sequence
-//                        + " already exists");
-//                    return;
-//                }
                 root = new InternalNode();
                 InternalNode internalLeafNode = (InternalNode)root;
                 internalLeafNode.insert(0, leafnode, false);
@@ -184,30 +176,32 @@ public class DNAtree {
      *            string version of sequence value to be removed from tree
      */
     public void remove(String sequence) {
-        LeafNode newnode = new LeafNode(sequence);
+        if (alphabetIsValid(sequence.toCharArray())) {
+            if (root instanceof FlyweightNode) {
+                System.out.println("sequence " + sequence + " does not exist");
+                return;
+            }
 
-        if (root instanceof FlyweightNode) {
-            System.out.println("sequence " + sequence + " does not exist");
-            return;
-        }
+            else if (root instanceof LeafNode) {
+                LeafNode leafRoot = (LeafNode)root;
+                if (leafRoot.getString().equals(sequence)) {
+                    root = FlyweightNode.getFlyweight();
+                    System.out.println("sequence " + sequence + " removed");
+                }
 
-        else if (root instanceof LeafNode) {
-            LeafNode leafRoot = (LeafNode)root;
-            if (leafRoot.getString().equals(sequence)) {
-                root = FlyweightNode.getFlyweight();
-                System.out.println("sequence " + sequence + " removed");
+                else {
+                    System.out.println("sequence " + sequence
+                        + " does not exist");
+                }
             }
 
             else {
-                System.out.println("sequence " + sequence + " does not exist");
-            }
-        }
-
-        else {
-            InternalNode internalLeafNode = (InternalNode)root;
-            DNATreeNode node = internalLeafNode.remove(0, newnode);
-            if (node != null) {
-                root = node;
+                InternalNode internalLeafNode = (InternalNode)root;
+                LeafNode newnode = new LeafNode(sequence);
+                DNATreeNode node = internalLeafNode.remove(0, newnode);
+                if (node != null) {
+                    root = node;
+                }
             }
         }
     }

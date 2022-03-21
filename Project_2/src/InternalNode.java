@@ -58,27 +58,7 @@ public class InternalNode extends DNATreeNode {
      *            DNAtree.
      */
     public void insert(int depth, LeafNode newLeafNode, boolean isNewNode) {
-        char ch = newLeafNode.getCharAt(depth);
-        int position = 0;
-        switch (ch) {
-            case 'A':
-                position = 0;
-                break;
-            case 'C':
-                position = 1;
-                break;
-            case 'G':
-                position = 2;
-                break;
-            case 'T':
-                position = 3;
-                break;
-            case 0:
-                position = 4;
-                break;
-            default:
-                // do nothing
-        }
+        int position = newLeafNode.getIndexOfByDepth(depth);
         DNATreeNode child = children[position];
         if (child instanceof FlyweightNode) {
             children[position] = newLeafNode;
@@ -119,56 +99,36 @@ public class InternalNode extends DNATreeNode {
      *
      * @param depth
      *            the current depth of the tree that is being traversed.
-     * @param nodeRemove
+     * @param nodeToRemove
      *            node to be removed
      * @return a child node if it is the only child after removal or null if
      *         there are more children remaining
      */
-    public DNATreeNode remove(int depth, LeafNode nodeRemove) {
-        char ch = nodeRemove.getCharAt(depth);
-        int position = 0;
-        switch (ch) {
-            case 'A':
-                position = 0;
-                break;
-            case 'C':
-                position = 1;
-                break;
-            case 'G':
-                position = 2;
-                break;
-            case 'T':
-                position = 3;
-                break;
-            case 0:
-                position = 4;
-                break;
-            default:
-                // do nothing
-        }
+    public DNATreeNode remove(int depth, LeafNode nodeToRemove) {
+        int position = nodeToRemove.getIndexOfByDepth(depth);
         DNATreeNode child = children[position];
         if (child instanceof FlyweightNode) {
-            System.out.println("sequence " + nodeRemove + " does not exist");
+            System.out.println("sequence " + nodeToRemove + " does not exist");
             return null;
         }
 
-        // Case: The child is a leaf; replace with empty, and check for merge
         if (child instanceof LeafNode) {
             LeafNode leafNode = (LeafNode)child;
-            if (leafNode.getString().equals(nodeRemove.getString())) {
+            if (leafNode.getString().equals(nodeToRemove.getString())) {
                 children[position] = FlyweightNode.getFlyweight();
-                System.out.println("sequence " + nodeRemove + " removed");
+                System.out.println("sequence " + nodeToRemove + " removed");
                 return getNode();
             }
             else {
-                System.out.println("sequence " + nodeRemove
+                System.out.println("sequence " + nodeToRemove
                     + " does not exist");
                 return null;
             }
         }
 
         InternalNode internalleafNode = (InternalNode)child;
-        DNATreeNode nodeValue = internalleafNode.remove(depth + 1, nodeRemove);
+        DNATreeNode nodeValue = internalleafNode.remove(depth + 1,
+            nodeToRemove);
 
         if (nodeValue != null) {
             children[position] = nodeValue;

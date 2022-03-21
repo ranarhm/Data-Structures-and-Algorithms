@@ -70,8 +70,6 @@ public class DNAtreeTest extends TestCase {
     }
 
 
-    
-
     /**
      * Tests the invalid inputs
      * 
@@ -83,6 +81,12 @@ public class DNAtreeTest extends TestCase {
         cm1.executeTreeOperation();
         Command cm8 = new Command("insert CGT", tree);
         cm8.executeTreeOperation();
+        Command cm12 = new Command("search CGTT", tree);
+        cm12.executeTreeOperation();
+        Command cm13 = new Command("remove CGTT", tree);
+        cm13.executeTreeOperation();
+        Command cm14 = new Command("search $", tree);
+        cm14.executeTreeOperation();
         Command cm2 = new Command("", tree);
         cm2.executeTreeOperation();
         Command cm3 = new Command("print none", tree);
@@ -95,11 +99,20 @@ public class DNAtreeTest extends TestCase {
         cm6.executeTreeOperation();
         Command cm7 = new Command("search RRB", tree);
         cm7.executeTreeOperation();
+        Command cm9 = new Command("remove ACGT", tree);
+        cm9.executeTreeOperation();
+        Command cm10 = new Command("remove CGT", tree);
+        cm10.executeTreeOperation();
+        Command cm11 = new Command("print stats", tree);
+        cm11.executeTreeOperation();
 
         assertEquals("sequence ACGT inserted at level 0\n"
-            + "sequence CGT inserted at level 1\n"
-            + "sequence VDS does not exist\n" + "# of nodes visited: 0\n"
-            + "no sequence found", outputStream.toString().trim());
+            + "sequence CGT inserted at level 1\n" + "# of nodes visited: 2\n"
+            + "no sequence found\n" + "sequence CGTT does not exist\n"
+            + "# of nodes visited: 2\n" + "no sequence found\n"
+            + "# of nodes visited: 0\n" + "no sequence found\n"
+            + "sequence ACGT removed\n" + "sequence CGT removed\n"
+            + "tree dump:\n" + "E", outputStream.toString().trim());
     }
 
 
@@ -239,6 +252,7 @@ public class DNAtreeTest extends TestCase {
 
     /**
      * Tests remove method
+     * 
      * @throws IOException
      *             returns true if the condition passes
      */
@@ -263,6 +277,7 @@ public class DNAtreeTest extends TestCase {
             + "sequence ACGTACGT removed", outputStream.toString().trim());
     }
 
+
     /**
      * Tests remove method
      * 
@@ -277,21 +292,27 @@ public class DNAtreeTest extends TestCase {
         cm2.executeTreeOperation();
         Command cm3 = new Command("remove A", tree);
         cm3.executeTreeOperation();
-        Command cm4 = new Command("insert AA", tree);
+        Command cm4 = new Command("remove AG", tree);
         cm4.executeTreeOperation();
+        Command cm5 = new Command("insert AA", tree);
+        cm5.executeTreeOperation();
+        Command cm8 = new Command("search AAA", tree);
+        cm8.executeTreeOperation();
         Command cm6 = new Command("insert AA", tree);
         cm6.executeTreeOperation();
-        Command cm5 = new Command("search AA$", tree);
-        cm5.executeTreeOperation();
+        Command cm7 = new Command("search AA$", tree);
+        cm7.executeTreeOperation();
 
         assertEquals("sequence ACGT inserted at level 0\n"
             + "sequence AAAA inserted at level 2\n"
-            + "sequence A does not exist\n"
-            + "sequence AA inserted at level 3\n"
-            + "sequence AA already exists\n" + "# of nodes visited: 4\n"
-            + "sequence: AA", outputStream.toString().trim());
+            + "sequence A does not exist\n" + "sequence AG does not exist\n"
+            + "sequence AA inserted at level 3\n" + "# of nodes visited: 4\n"
+            + "sequence: AAAA\n" + "sequence AA already exists\n"
+            + "# of nodes visited: 4\n" + "sequence: AA", outputStream
+                .toString().trim());
     }
-    
+
+
     /**
      * Tests a simple search method
      * 
@@ -328,6 +349,7 @@ public class DNAtreeTest extends TestCase {
 
     /**
      * Tests search method
+     * 
      * @throws IOException
      *             returns true if the condition passes
      */
@@ -597,6 +619,5 @@ public class DNAtreeTest extends TestCase {
             + "sequence: AA\n" + "# of nodes visited: 4\n"
             + "no sequence found", outputStream.toString().trim());
     }
-
 
 }
