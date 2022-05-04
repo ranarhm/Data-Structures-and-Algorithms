@@ -1,0 +1,69 @@
+// On my honor:
+//
+// - I have not used source code obtained from another student,
+// or any other unauthorized source, either modified or
+// unmodified.
+//
+// - All source code and documentation used in my program is
+// either my original work, or was derived by me from the
+// source code published in the textbook for this course.
+//
+// - I have not discussed coding details about this project with
+// anyone other than my partner (in the case of a joint
+// submission), instructor, ACM/UPE tutors or the TAs assigned
+// to this course. I understand that I may discuss the concepts
+// of this program with other students, and that another student
+// may help me debug my program so long as neither of us writes
+// anything during the discussion or modifies any computer file
+// during the discussion. I have violated neither the spirit nor
+// letter of this restriction.
+
+/**
+ * The dictionary interface
+ *
+ * @author Joan Piayet Perez Lozano (joanperezl)
+ * @author Raena Rahimi Bafrani (raenar)
+ * @version April 16, 2022
+ * 
+ * @param <K>
+ *            the type
+ * @param <E>
+ *            the type
+ */
+public interface Dictionary<K, E> {
+
+    /**
+     * Insert a record
+     * 
+     * @param key
+     *            The key for the record being inserted.
+     * @param elem
+     *            The record being inserted.
+     */
+    public void insert(K key, E elem);
+
+
+    /**
+     * Remove and return a record.
+     * 
+     * @param key
+     *            The key of the record to be removed.
+     * @return A matching record. If multiple records match
+     *         "k", remove an arbitrary one. Return null if no record
+     *         with key "k" exists.
+     */
+    public E remove(K key);
+
+
+    /**
+     * @return A record matching "k" (null if none exists).
+     *         If multiple records match, return an arbitrary one.
+     * @param key
+     *            The key of the record to find
+     */
+    public SinglyLinkedList<E> find(K key);
+
+
+    /** @return The number of records in the dictionary. */
+    public int size();
+}
